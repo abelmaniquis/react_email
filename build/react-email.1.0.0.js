@@ -48,6 +48,7 @@
 	
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(34);
+	
 	var router = __webpack_require__(172);
 	var Router = router.Router;
 	var Route = router.Route;
@@ -99,37 +100,102 @@
 	        React.createElement(
 	            Link,
 	            { to: '/inbox/' + props.inbox.id },
-	            props.inbox.from
+	            props.from
 	        ),
 	        ' ',
-	        props.inbox.title,
+	        props.title,
 	        ' ',
-	        props.inbox.content
+	        props.content
 	    );
 	};
 	
-	var InboxContactList = function InboxContactList(props) {
-	    var contacts = Object.keys(props.contacts).map(function (contactId, index) {
-	        var contact = props.contacts[contactId];
-	        return React.createElement(
+	var InboxList = function InboxList(props) {
+	    console.log("LOOOOOOOP!");
+	    var display = [];
+	    for (var i = 0; i < 2; i++) {
+	
+	        display.push(React.createElement(
 	            'li',
-	            { key: index },
-	            React.createElement(Contact, { from: contact.inbox.from, title: contact.inbox.title, content: contact.inbox.content })
-	        );
-	    });
+	            null,
+	            props.inbox[i].from
+	        ));
+	        display.push(React.createElement(
+	            'li',
+	            null,
+	            props.inbox[i].to
+	        ));
+	        display.push(React.createElement(
+	            'li',
+	            null,
+	            props.inbox[i].title
+	        ));
+	        display.push(React.createElement(
+	            'li',
+	            null,
+	            props.inbox[i].content
+	        ));
+	    }
 	
 	    return React.createElement(
-	        'ul',
+	        'div',
 	        null,
-	        contacts
+	        React.createElement(
+	            'h1',
+	            null,
+	            'This is where the InboxList is'
+	        ),
+	        React.createElement(
+	            'ul',
+	            null,
+	            display
+	        )
 	    );
 	};
 	
-	var InboxListContainer = function InboxListContainer() {
-	    return React.createElement(InboxContactList, { contacts: INBOX.inbox });
+	var InboxListContainer = function InboxListContainer(props) {
+	    return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	            'h1',
+	            null,
+	            'Inbox Route'
+	        ),
+	        React.createElement(InboxList, { inbox: INBOX.inbox })
+	    );
+	};
+	
+	var SpamList = function SpamList(props) {
+	
+	    console.log(props);
+	    return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	            'h1',
+	            null,
+	            'This is where the SpamList is'
+	        ),
+	        React.createElement('ul', null)
+	    );
+	};
+	
+	var SpamListContainer = function SpamListContainer(props) {
+	    console.log(INBOX.spam);
+	    return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	            'h1',
+	            null,
+	            'Spam Route'
+	        ),
+	        React.createElement(SpamList, { inbox: INBOX.spam })
+	    );
 	};
 	
 	var HomePage = function HomePage(props) {
+	    console.log(props.children);
 	    return React.createElement(
 	        'div',
 	        null,
@@ -138,7 +204,29 @@
 	            null,
 	            'Your Email'
 	        ),
-	        props.children
+	        React.createElement(
+	            'h1',
+	            null,
+	            'This is Loading'
+	        ),
+	        React.createElement(
+	            'p',
+	            null,
+	            React.createElement(
+	                Link,
+	                { to: '/inbox/' },
+	                'Click to go to inbox'
+	            )
+	        ),
+	        React.createElement(
+	            'p',
+	            null,
+	            React.createElement(
+	                Link,
+	                { to: '/spam/' },
+	                'Click to go to spam folder'
+	            )
+	        )
 	    );
 	};
 	
@@ -146,7 +234,8 @@
 	    Router,
 	    { history: hashHistory },
 	    React.createElement(Route, { path: '/', component: HomePage }),
-	    React.createElement(Route, { path: '/inbox', component: InboxListContainer })
+	    React.createElement(Route, { path: '/inbox', component: InboxListContainer }),
+	    React.createElement(Route, { path: '/spam', component: SpamListContainer })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
